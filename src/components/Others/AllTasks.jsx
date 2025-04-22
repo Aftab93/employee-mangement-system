@@ -1,83 +1,73 @@
-import React from 'react';
-
-const tasks = [
-  {
-    id: 1,
-    title: 'Make UI Design',
-    description: 'Create a responsive UI using Tailwind CSS.',
-    date: '2025-04-22',
-    employee: 'Aftab Ali',
-    category: 'Design',
-    priority: 'High',
-    status: 'In Progress',
-  },
-  {
-    id: 2,
-    title: 'Build API',
-    description: 'Develop backend using Node.js and Express.',
-    date: '2025-04-23',
-    employee: 'John Doe',
-    category: 'Development',
-    priority: 'Medium',
-    status: 'Completed',
-  },
-];
-
-const getStatusColor = (status) => {
-  switch (status) {
-    case 'In Progress':
-      return 'bg-blue-500';
-    case 'Completed':
-      return 'bg-green-500';
-    case 'Pending':
-      return 'bg-yellow-500';
-    case 'Overdue':
-      return 'bg-red-500';
-    default:
-      return 'bg-gray-400';
-  }
-};
-
-const getPriorityColor = (priority) => {
-  switch (priority) {
-    case 'High':
-      return 'bg-red-500';
-    case 'Medium':
-      return 'bg-yellow-500';
-    case 'Low':
-      return 'bg-green-500';
-    default:
-      return 'bg-gray-400';
-  }
-};
+import React, { useContext } from 'react';
+import { AuthContext } from '../../context/AuthProvider';
 
 const AllTasks = () => {
+  const { employees = [] } = useContext(AuthContext);
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-      {tasks.map((task) => (
-        <div key={task.id} className="bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
-          <div className="flex justify-between items-center text-sm mb-2">
-            <span className={`px-3 py-1 rounded-full text-white text-xs ${getPriorityColor(task.priority)}`}>
-              {task.priority}
-            </span>
-            <span className="text-gray-600">{task.date}</span>
-          </div>
+    <div
+      id="tasklist"
+      className="space-y-4 p-2 bg-gray-100 rounded-xl shadow-inner"
+    >
+      {/* Header Row */}
+      <div className="flex justify-between items-center bg-emerald-600 text-white font-semibold py-2 px-4 rounded-t-lg shadow-md">
+        <div className="flex-1 text-center">Employee Name</div>
+        <div className="flex-1 text-center">New Task</div>
+        <div className="flex-1 text-center">Active Task</div>
+        <div className="flex-1 text-center">Completed</div>
+        <div className="flex-1 text-center">Failed</div>
+      </div>
 
-          <h2 className="text-xl font-bold">{task.title}</h2>
-          <p className="text-sm mt-2 text-gray-700">{task.description}</p>
+      {/* Scrollable Card List */}
+      <div
+        className="h-[150px] overflow-y-auto no-scrollbar"
+        style={{
+          scrollbarWidth: 'none', /* For Firefox */
+          msOverflowStyle: 'none', /* For IE and Edge */
+        }}
+      >
+        {employees.map((user, index) => (
+          <div
+            key={index}
+            className="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition mb-2"
+          >
+            {/* Employee Name */}
+            <div className="flex-1 text-center font-bold">{user.firstName}</div>
 
-          <div className="text-sm text-gray-600 mt-4 space-y-1">
-            <p><span className="font-medium">Employee:</span> {task.employee}</p>
-            <p><span className="font-medium">Category:</span> {task.category}</p>
-            <p>
-              <span className="font-medium">Status:</span>{' '}
-              <span className={`ml-2 px-2 py-1 text-xs text-white rounded-full ${getStatusColor(task.status)}`}>
-                {task.status}
+            {/* New Task */}
+            <div className="flex-1 text-center">
+              {/* Replace this with the actual task data */}
+              <span className="text-green-500 text-xl px-2 py-1 font-semibold rounded-full">
+                {user.taskCount.newTask}
               </span>
-            </p>
+            </div>
+
+            {/* Active Task */}
+            <div className="flex-1 text-center">
+              {/* Replace this with the actual task data */}
+              <span className="text-blue-500 text-xl px-2 py-1 font-semibold rounded-full">
+              {user.taskCount.active}
+              </span>
+            </div>
+
+            {/* Completed Task */}
+            <div className="flex-1 text-center">
+              {/* Replace this with the actual task data */}
+              <span className="text-yellow-500 text-xl px-2 py-1 font-semibold rounded-full">
+              {user.taskCount.completed}
+              </span>
+            </div>
+
+            {/* Failed Task */}
+            <div className="flex-1 text-center">
+              {/* Replace this with the actual task data */}
+              <span className="text-red-500 text-xl font-semibold px-2 py-1 rounded-full">
+              {user.taskCount.failed}
+              </span>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
