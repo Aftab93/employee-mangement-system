@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
-const Header = ({ data }) => {
+const Header = (props) => {
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
-    if (!data) {
+    if (!props.data) {
       setUserName('Admin');
     } else {
-      setUserName(data.firstName);
+      setUserName(props.data.firstName);
     }
-  }, [data]);
+  }, [props.data]);
 
   const logOutUser = () => {
-    localStorage.setItem('loggedInUser','')
-    window.location.reload()
-  }
+    localStorage.setItem('loggedInUser', '');
+    props.changeUser();
+  };
 
   return (
     <header className="w-full bg-emerald-600 text-white px-6 py-4 shadow-md flex items-center justify-between">
@@ -25,7 +25,10 @@ const Header = ({ data }) => {
         </h1>
       </div>
 
-      <button onClick={logOutUser} className="bg-white text-emerald-600 font-medium px-4 py-2 rounded-full hover:bg-emerald-100 transition">
+      <button
+        onClick={logOutUser}
+        className="bg-white text-emerald-600 font-medium px-4 py-2 rounded-full hover:bg-emerald-100 transition"
+      >
         Log Out
       </button>
     </header>

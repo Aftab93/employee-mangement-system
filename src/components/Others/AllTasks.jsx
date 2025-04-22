@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../../context/AuthProvider';
 
 const AllTasks = () => {
-  const { employees = [] } = useContext(AuthContext);
+  const [userData, setUserData] = useContext(AuthContext);
 
   return (
     <div
@@ -26,7 +26,7 @@ const AllTasks = () => {
           msOverflowStyle: 'none', /* For IE and Edge */
         }}
       >
-        {employees.map((user, index) => (
+        {userData.map((user, index) => (
           <div
             key={index}
             className="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition mb-2"
